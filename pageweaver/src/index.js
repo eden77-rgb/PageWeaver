@@ -7,12 +7,20 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
-function addResponse(param, rep) {
-	if (param != null && param.trim() != '') {
-		rep += ` ${param}`;
+function getNameHtml(name, html) {
+	if (name != null && name.trim() != '') {
+		html += ` <p>Nom : <strong>${name}</strong></p>`;
 	}
 
-	return rep;
+	return html;
+}
+
+function getColorHtml(color, html) {
+	if (color != null && color.trim() != '') {
+		html += ` <p>Couleur : <span style="color:${color}">${color}</span></p>`;
+	}
+
+	return html;
 }
 
 export default {
@@ -22,11 +30,27 @@ export default {
 		const name = url.searchParams.get("name");
 		const color = url.searchParams.get("color");
 
-		let rep = "Hello";
+		let html = `
+		<!DOCTYPE html>
+        <html lang='fr'>
+        <head>
+            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <title>PageWeaver</title>
+        </head>
+        <body>
+		`;
 
-		rep = addResponse(name, rep);
-		rep = addResponse(color, rep);
+		html = getNameHtml(name, html);
+		html = getColorHtml(color, html);
 
-		return new Response(rep);
+		html += `
+		</body>
+		</html>
+		`
+
+		return new Response(html, {
+			headers: { 'Content-Type': 'text/html; charset=UTF-8' },
+		});
 	},
 };
