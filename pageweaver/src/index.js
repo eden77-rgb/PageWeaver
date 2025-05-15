@@ -1,3 +1,4 @@
+
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -7,6 +8,7 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
+
 function getNameHtml(name, html) {
 	if (name != null && name.trim() != '') {
 		html += ` <p>Nom : <strong>${name}</strong></p>`;
@@ -29,6 +31,30 @@ export default {
 		const url = new URL(request.url);
 		const name = url.searchParams.get("name");
 		const color = url.searchParams.get("color");
+		const template = url.searchParams.get("template");
+
+		if (url.pathname == "/style.css") {
+			const css = `
+			.dark {
+				background-color: #121212;
+			}
+
+			.dark p {
+				color: #ffffff
+			}
+
+			.white {
+				background-color: #ffffff
+			}
+
+			.white p {
+				color: #121212
+			}
+			`	
+			return new Response(css, {
+				headers: { 'Content-Type': 'text/css' },
+			})
+		}
 
 		let html = `
 		<!DOCTYPE html>
@@ -37,8 +63,9 @@ export default {
             <meta charset='UTF-8'>
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
             <title>PageWeaver</title>
+			<link rel="stylesheet" href="style.css">
         </head>
-        <body>
+        <body class="${template}">
 		`;
 
 		html = getNameHtml(name, html);
