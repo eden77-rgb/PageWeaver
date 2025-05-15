@@ -7,15 +7,26 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
+function addResponse(param, rep) {
+	if (param != null && param.trim() != '') {
+		rep += ` ${param}`;
+	}
+
+	return rep;
+}
 
 export default {
 	async fetch(request, env, ctx) {
 
 		const url = new URL(request.url);
-		
-		const name = url.searchParams.get("name") || '';
-		const couleur = " " + url.searchParams.get("color") || '';
+		const name = url.searchParams.get("name");
+		const color = url.searchParams.get("color");
 
-		return new Response("Hello " + name + couleur);
+		let rep = "Hello";
+
+		rep = addResponse(name, rep);
+		rep = addResponse(color, rep);
+
+		return new Response(rep);
 	},
 };
