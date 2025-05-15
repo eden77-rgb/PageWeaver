@@ -10,6 +10,12 @@
 
 export default {
 	async fetch(request, env, ctx) {
-		return new Response('Hello World!');
+
+		const url = new URL(request.url);
+		
+		const name = url.searchParams.get("name") || '';
+		const couleur = " " + url.searchParams.get("color") || '';
+
+		return new Response("Hello " + name + couleur);
 	},
 };
