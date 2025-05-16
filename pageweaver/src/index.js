@@ -1,3 +1,4 @@
+import { getCSS } from "./style/style.js";
 
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
@@ -34,24 +35,7 @@ export default {
 		const template = url.searchParams.get("template");
 
 		if (url.pathname == "/style.css") {
-			const css = `
-			.dark {
-				background-color: #121212;
-			}
-
-			.dark p {
-				color: #ffffff
-			}
-
-			.white {
-				background-color: #ffffff
-			}
-
-			.white p {
-				color: #121212
-			}
-			`	
-			return new Response(css, {
+			return new Response(getCSS(), {
 				headers: { 'Content-Type': 'text/css' },
 			})
 		}
