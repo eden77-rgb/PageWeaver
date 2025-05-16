@@ -31,7 +31,6 @@ function getColorHtml(color, html) {
 async function getContent(sujet, html, apiKey) {
 	if (sujet != null && sujet.trim() != '') {
 		const data = await getData(apiKey, sujet);
-		console.log(data);
 		html += data
 	}
 
@@ -41,7 +40,7 @@ async function getContent(sujet, html, apiKey) {
 export default {
 	async fetch(request, env) {
 		
-		const groqApiKey = "";
+		const groqApiKey = env.GROQ_API_KEY
 
 		const url = new URL(request.url);
 		const name = url.searchParams.get("name");
@@ -72,7 +71,7 @@ export default {
 		html = await getContent(sujet, html, groqApiKey);
 
 		html += `
-		</body>
+		</body> 
 		</html>
 		`
 
