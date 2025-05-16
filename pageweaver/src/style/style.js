@@ -15,6 +15,10 @@ export function getCSS() {
     color: #ffffff;
     }
 
+    .dark {
+    color: #ffffff;
+    }
+
     .white {
     background-color: #ffffff;
     }
