@@ -50,3 +50,4 @@
 © 2025 – Tous droits réservés.
 
 Ce projet est protégé. Il ne peut être copié, distribué ou utilisé sans autorisation préalable de l’auteur.
+Voir le fichier [LICENSE](./LICENSE) pour plus d’informations.
