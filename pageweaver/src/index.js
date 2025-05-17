@@ -1,7 +1,6 @@
 import { getCSS } from "./style/style.js";
 import { getData } from "./service/GroqService.js";
 
-
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -28,31 +27,37 @@ function getColorHtml(color, html) {
 	return html;
 }
 
-async function getContent(sujet, html, apiKey) {
-	if (sujet != null && sujet.trim() != '') {
-		const data = await getData(apiKey, sujet);
-		html += data
+async function getCachedContent(env, sujet, apiKey) {
+	const cacheKey = `sujet:${sujet}`;
+
+	let cached = await env.PAGEWEAVER_KV.get(cacheKey);
+	if (cached) {
+		return cached;
 	}
 
-	return html;
+	const content = await getData(apiKey, sujet);
+	await env.PAGEWEAVER_KV.put(cacheKey, content);
+
+	return content;
 }
 
 export default {
 	async fetch(request, env) {
 		
-		const groqApiKey = env.GROQ_API_KEY
-
 		const url = new URL(request.url);
-		const name = url.searchParams.get("name");
 		const color = url.searchParams.get("color");
-		const template = url.searchParams.get("template");
-		const sujet = url.searchParams.get("sujet");
 
 		if (url.pathname == "/style.css") {
-			return new Response(getCSS(), {
+			return new Response(getCSS(color), {
 				headers: { 'Content-Type': 'text/css' },
 			})
 		}
+
+		const groqApiKey = env.GROQ_API_KEY
+
+		const name = url.searchParams.get("name");
+		const template = url.searchParams.get("template");
+		const sujet = url.searchParams.get("sujet");
 
 		let html = `
 		<!DOCTYPE html>
@@ -61,14 +66,18 @@ export default {
             <meta charset='UTF-8'>
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
             <title>PageWeaver</title>
-			<link rel="stylesheet" href="style.css">
+			<link rel="stylesheet" href="style.css?color=${encodeURIComponent(color)}">
         </head>
         <body class="${template}">
 		`;
 
 		html = getNameHtml(name, html);
 		html = getColorHtml(color, html);
-		html = await getContent(sujet, html, groqApiKey);
+
+		if (sujet != null && sujet.trim() != '') {
+			const content = await getCachedContent(env, sujet, groqApiKey);
+			html += `<div>${content}</div>`;
+		}
 
 		html += `
 		</body> 
