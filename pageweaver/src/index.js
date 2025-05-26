@@ -44,20 +44,19 @@ async function getCachedContent(env, sujet, apiKey) {
 export default {
 	async fetch(request, env) {
 		
+		const groqApiKey = env.GROQ_API_KEY
+
 		const url = new URL(request.url);
 		const color = url.searchParams.get("color");
+		const name = url.searchParams.get("name");
+		const template = url.searchParams.get("template");
+		const sujet = url.searchParams.get("sujet");
 
 		if (url.pathname == "/style.css") {
 			return new Response(getCSS(color), {
 				headers: { 'Content-Type': 'text/css' },
 			})
 		}
-
-		const groqApiKey = env.GROQ_API_KEY
-
-		const name = url.searchParams.get("name");
-		const template = url.searchParams.get("template");
-		const sujet = url.searchParams.get("sujet");
 
 		let html = `
 		<!DOCTYPE html>

@@ -1,11 +1,11 @@
 import Groq from "groq-sdk"
 
-export async function getData(apiKey, sujet, color) {
+export async function getData(apiKey, sujet) {
     const groq = new Groq({ apiKey: apiKey });
 
     let message = `Donne-moi une liste structurée en HTML (ul/li, p, h2, etc.) pour un site web autour du sujet : ${sujet}.`;
-    message += `Inlcus des balise strong sur les mot important mais pas les titres`;
-    message += `N'inclus aucun style, aucune couleur, seulement le contenu HTML brut.`; 
+    message += `Inlcus des balises STRONG sur les mot important mais pas les titres`;
+    message += `N'inclus aucun style, aucune couleur et aucun *, seulement le contenu HTML brut.`; 
 
 
     const rep = await groq.chat.completions.create({
