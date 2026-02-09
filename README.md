@@ -33,7 +33,7 @@
 
 ### 🔗 Exemple d’URL
 
-[https://pageweaver.pageweaver.workers.dev/?template=dark&color=red&sujet=pourquoi%20l%27assembleur%20c%27est%20il%20g%C3%A9nial%20?](https://pageweaver.pageweaver.workers.dev/?template=dark&color=red&sujet=pourquoi%20l%27assembleur%20c%27est%20il%20g%C3%A9nial%20?)
+[https://pageweaver.eden77-rgb.workers.dev/?template=dark&color=red&sujet=pourquoi%20l%27assembleur%20c%27est%20il%20g%C3%A9nial%20?](https://pageweaver.eden77-rgb.workers.dev/?template=dark&color=red&sujet=pourquoi%20l%27assembleur%20c%27est%20il%20g%C3%A9nial%20?)
 
 ---
 
