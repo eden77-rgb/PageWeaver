@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Formulaire</title>
+	<style>
+		/* Style général */
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background-color: #f0f2f5;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		/* Conteneur du formulaire */
+		.form-container {
+			background-color: #fff;
+			padding: 30px;
+			border-radius: 10px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+			width: 100%;
+			max-width: 400px;
+		}
+
+		.form-container h2 {
+			text-align: center;
+			margin-bottom: 20px;
+			color: #333;
+		}
+
+		/* Style des champs */
+		.form-group {
+			margin-bottom: 15px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+			color: #555;
+			font-weight: 500;
+		}
+
+		input[type="text"],
+		input[type="color"],
+		select {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-size: 16px;
+		}
+
+		/* Bouton */
+		button {
+			width: 100%;
+			padding: 12px;
+			background-color: #4CAF50;
+			border: none;
+			border-radius: 5px;
+			color: white;
+			font-size: 16px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		button:hover {
+			background-color: #45a049;
+		}
+
+		/* Responsive */
+		@media (max-width: 500px) {
+			.form-container {
+				padding: 20px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="form-container">
+		<h2>Formulaire</h2>
+
+		<form action="#" method="post" id="formulaire">
+			<div class="form-group">
+				<label for="sujet">Sujet :</label>
+				<input type="text" id="sujet" name="sujet" required>
+			</div>
+
+			<div class="form-group">
+				<label for="prenom">Prenom :</label>
+				<input type="text" id="prenom" name="prenom">
+			</div>
+
+			<div class="form-group">
+				<label for="couleur">Couleur :</label>
+				<input type="color" id="couleur" name="couleur" value="#ff0000">
+			</div>
+
+			<div class="form-group">
+				<label for="template">Template :</label>
+				<select id="template" name="template" required>
+					<option value="">--Choisir un template--</option>
+					<option value="dark">Dark</option>
+					<option value="white">White</option>
+					<option value="lightblue">Blue</option>
+				</select>
+			</div>
+
+			<button type="submit">Générer la page</button>
+		</form>
+	</div>
+
+</body>
+
+<script>
+	const form = document.getElementById("formulaire")
+	form.addEventListener("submit", (event) => {
+		event.preventDefault()
+
+		const sujet = document.getElementById("sujet").value
+		const prenom = document.getElementById("prenom").value
+		const couleur = document.getElementById("couleur").value
+		const template = document.getElementById("template").value
+
+		let url = `/content?sujet=${sujet}&color=${encodeURIComponent(couleur)}&template=${template}`
+		if (prenom.trim() != "") {
+			url += `&name=${prenom}`
+		}
+
+		window.location.href = url
+	})
+</script>
+
+</html>

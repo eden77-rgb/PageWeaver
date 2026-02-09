@@ -1,0 +1,125 @@
+/* ==== Style global ==== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* ==== Templates ==== */
+.dark {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.white {
+    background-color: #ffffff;
+    color: #121212;
+}
+
+.lightblue {
+    background-color: #e0f7fa;
+    color: #006064;
+}
+
+/* ==== Filigrane prénom ==== */
+.prenom {
+    display: flex;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    font-size: 30vw;
+    font-weight: 700;
+    opacity: 0.08;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 0;
+    overflow: hidden;
+}
+
+/* Couleur adaptée à chaque thème */
+.dark .prenom {
+    color: #ffffff;
+}
+
+.white .prenom {
+    color: #888888;
+}
+
+.lightblue .prenom {
+    color: #005c6b;
+}
+
+/* ==== Contenu principal ==== */
+body>div {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+}
+
+/* ==== Titres ==== */
+h1,
+h2,
+h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.6rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+}
+
+/* ==== Paragraphes ==== */
+p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+/* ==== Listes ==== */
+ul,
+ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+/* ==== Strong ==== */
+strong {
+    font-weight: 700;
+}
+
+/* ==== Liens ==== */
+a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+a:hover {
+    text-decoration: none;
+}

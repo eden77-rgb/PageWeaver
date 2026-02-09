@@ -9,12 +9,11 @@
 		"test": "vitest"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "^0.8.19",
-		"vitest": "~3.0.7",
-		"wrangler": "^4.14.4"
+		"@cloudflare/vitest-pool-workers": "^0.12.4",
+		"vitest": "~3.2.0",
+		"wrangler": "^4.63.0"
 	},
 	"dependencies": {
-		"dotenv": "^16.5.0",
-		"groq-sdk": "^0.21.0"
+		"groq-sdk": "^0.37.0"
 	}
 }

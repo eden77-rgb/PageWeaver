@@ -1,4 +1,3 @@
-import { getCSS } from "./style/style.js";
 import { getData } from "./service/GroqService.js";
 
 /**
@@ -11,26 +10,10 @@ import { getData } from "./service/GroqService.js";
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
-function getNameHtml(name, html) {
-	if (name != null && name.trim() != '') {
-		html += ` <p>Nom : <strong>${name}</strong></p>`;
-	}
-
-	return html;
-}
-
-function getColorHtml(color, html) {
-	if (color != null && color.trim() != '') {
-		html += `<p>Couleur : <span style="color:${color}">${color}</span></p>`;
-	}
-
-	return html;
-}
-
-async function getCachedContent(env, sujet, apiKey) {
+async function getContent(env, sujet, apiKey) {
 	const cacheKey = `sujet:${sujet}`;
 
-	let cached = await env.PAGEWEAVER_KV.get(cacheKey);
+	const cached = await env.PAGEWEAVER_KV.get(cacheKey);
 	if (cached) {
 		return cached;
 	}
@@ -42,49 +25,56 @@ async function getCachedContent(env, sujet, apiKey) {
 }
 
 export default {
-	async fetch(request, env) {
-		
+	async fetch(request, env, ctx) {
+
 		const groqApiKey = env.GROQ_API_KEY
 
 		const url = new URL(request.url);
-		const color = url.searchParams.get("color");
-		const name = url.searchParams.get("name");
-		const template = url.searchParams.get("template");
 		const sujet = url.searchParams.get("sujet");
+		const color = url.searchParams.get("color");
+		const template = url.searchParams.get("template");
+		const name = url.searchParams.get("name");
 
-		if (url.pathname == "/style.css") {
-			return new Response(getCSS(color), {
-				headers: { 'Content-Type': 'text/css' },
+		let html = `
+			<!DOCTYPE html>
+			<html lang='fr'>
+
+			<head>
+				<meta charset='UTF-8'>
+				<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+				<title>PageWeaver</title>
+				<link rel="stylesheet" href="style.css">
+			</head>
+
+			<style>
+				strong {
+					color: ${color};
+				}
+			</style>
+
+			<body class="${template}">
+		`
+
+		if (name) {
+			html += `
+				<p class="prenom">${name}</div>
+			`
+		}
+
+		const content = await getContent(env, sujet, groqApiKey)
+		html += `
+				<div>${content}</div>
+			</body>
+
+			</html>
+		`
+
+		if (url.pathname == "/content") {
+			return new Response(html, {
+				headers: { 'Content-Type': 'text/html; charset=UTF-8' }
 			})
 		}
 
-		let html = `
-		<!DOCTYPE html>
-        <html lang='fr'>
-        <head>
-            <meta charset='UTF-8'>
-            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-            <title>PageWeaver</title>
-			<link rel="stylesheet" href="style.css?color=${encodeURIComponent(color)}">
-        </head>
-        <body class="${template}">
-		`;
-
-		html = getNameHtml(name, html);
-		html = getColorHtml(color, html);
-
-		if (sujet != null && sujet.trim() != '') {
-			const content = await getCachedContent(env, sujet, groqApiKey);
-			html += `<div>${content}</div>`;
-		}
-
-		html += `
-		</body> 
-		</html>
-		`
-
-		return new Response(html, {
-			headers: { 'Content-Type': 'text/html; charset=UTF-8' },
-		});
-	},
+		return new Response("Not Found", { status: 404 });
+	}
 };
